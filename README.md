@@ -9,7 +9,7 @@ First of all, you need installed [Docker](https://docs.docker.com/engine/install
 Clone this repo and run docker script to run server.
 
 ```sh
-git clone git@github.com:jean-git/fastapi_serverless_example.git
+git clone https://github.com/jean-git/fastapi_serverless_example.git
 cd fastapi_serverless_example
 sh docker_build_and_run.sh
 ```
@@ -31,7 +31,7 @@ First of all, requires [Node.js](https://nodejs.org/) v12+ to run.
 Clone this repo, install the dependencies and deploy to AWS.
 
 ```sh
-git clone git@github.com:jean-git/fastapi_serverless_example.git
+git clone https://github.com/jean-git/fastapi_serverless_example.git
 cd fastapi_serverless_example
 npm i
 serverless deploy -v --stage dev
