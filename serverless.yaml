@@ -1,4 +1,4 @@
-service: my-awesome-app
+service: fastapi-serverless-example
 
 package:
   individually: true
@@ -6,26 +6,31 @@ package:
 provider:
   name: aws
   runtime: python3.8
-  region: eu-west-1
+  region: us-east-1
   stage: ${opt:stage, "dev"}
 
 plugins:
   - serverless-python-requirements
-
+  - serverless-prune-plugin
 custom:
   pythonRequirements:
     dockerizePip: true
     layer:
-      name: my-awesome-app-layer
-      description: My awesome app layer
+      name: my-fastapi-serverless-app-layer
+      description: My fastapi serverless app layer
       compatibleRuntimes:
         - python3.8
+  prune:
+    automatic: true
+    includeLayers: true
+    number: 10
 
 functions:
   app:
     package:
       include:
         - "main.py"
+        - "app"
       exclude:
         - "requirements.txt"
         - "package.json"
@@ -35,7 +40,7 @@ functions:
         - "node_modules/**"
         - "venv/**"
 
-    handler: main.handler
+    handler: app.main.handler
     environment:
       STAGE: ${self:provider.stage}
     layers:
