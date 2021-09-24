@@ -26,7 +26,7 @@ your preferred browser.
 ```
 ## Running with Serverless in AWS
 
-First of all, requires [Node.js](https://nodejs.org/) v12+ to run.
+First of all, requires [Node.js](https://nodejs.org/) v12+ and AWS Access Key ID and AWS Secret Access Key to run.
 
 Clone this repo, install the dependencies and deploy to AWS.
 
