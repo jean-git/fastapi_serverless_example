@@ -9,9 +9,14 @@ provider:
   region: us-east-1
   stage: ${opt:stage, "dev"}
 
+  environment:
+    STAGE: ${self:provider.stage}
+
 plugins:
   - serverless-python-requirements
   - serverless-prune-plugin
+  - serverless-offline
+  - serverless-dynamodb-local
 custom:
   pythonRequirements:
     dockerizePip: true
@@ -24,6 +29,23 @@ custom:
     automatic: true
     includeLayers: true
     number: 10
+
+  dynamodb:
+    # If you only want to use DynamoDB Local in some stages, declare them here
+      stages:
+        - dev
+      start:
+        port: 8000
+        inMemory: true
+        heapInitial: 200m
+        heapMax: 1g
+        migrate: true
+        seed: true
+        convertEmptyValues: true
+      # Uncomment only if you already have a DynamoDB running locally
+      # noStart: true
+      
+  stage: ${opt:stage, self:provider.stage}
 
 functions:
   app:
@@ -49,3 +71,19 @@ functions:
       - http:
           method: any
           path: /{proxy+}
+
+resources:
+  Resources:
+    usersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: usersTable
+        AttributeDefinitions:
+          - AttributeName: email
+            AttributeType: S
+        KeySchema:
+          - AttributeName: email
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1          
